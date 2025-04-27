@@ -1,8 +1,75 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <script type="module" src="script.js"></script>
-  </head>
-  <body>
-  </body>
+      <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Family Christmas Wishlist</title>
+</head>
+<body>
+   <!--Estructure of HTML=
+  1- Heading (<h1>)
+  2- Dropdown-Menu (<select id="family-member-select">)
+  3- Form (<form id="add-present-form">)
+  4- Wishlist Display Area (<div id="wishlist-display">)
+  5- Script tag (<script>)-->
+
+    <h1>Family Christmas Wishlists</h1>
+
+    <!-- Dropdonw-menu-->
+    <div>
+        <label for="family-member-select">Whose wishlist do you want to see?</label>
+        <select id="family-member-select" name="family-member">
+            <!-- Options  JavaScript -->
+            <option value="">Select a Person</option>
+        </select>
+      </div>
+    <!--End Dropdonw-menu-->
+    <h2>Add a New Present to the Wishlist:</h2>
+
+       <!--Form inputs 
+       4 Divs =
+         1- Presnet Name ,
+         2= Present Description , 
+         3= Presnet Link ,
+         4= Button add to the List-->
+
+       <!-- <div>
+            Label for=
+            input type=
+            id=
+            name=
+            requeried>
+            </div> -->
+
+    <form id="add-present-form">
+
+        <div> <!-- 1- Present-->
+            <label for="present-name">Present Name:</label><br>
+            <input type="text" id="present-name" name="present-name" required>
+        </div>
+
+        <div> <!--2- Present Description-->
+            <label for="present-description">Description / Notes:</label><br>
+            <textarea id="present-description" name="present-description" rows="3"></textarea><!-- 'rows="3" size of te box -->
+            
+        </div>
+        <div> <!--3- Present Link-->
+            <label for="present-url">Link:</label><br>
+            <input type="url" id="present-url" name="present-url" placeholder="https://example.com/product_link">
+        </div>
+
+        <div><!-- 4- Button-->
+            <button type="submit">Add to Wishlist</button>
+        </div>
+    </form>
+
+    <h2>Wishlist for <span id="selected-person-name">Selected Person</span>:</h2>
+    <div id="wishlist-display">
+        <!-- Wishlist JavaScript-->
+    </div>
+
+    <!-- 'type="module" because using = storage.js -->
+    <script type="module" src="main.js"></script>
+
+</body>
 </html>
