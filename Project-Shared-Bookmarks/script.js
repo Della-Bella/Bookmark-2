@@ -1,7 +1,6 @@
 // get data for storage.js
 import { getUserIds } from "./storage.js";
 
-console.log("main.js loaded");
 
 // whait for the html to be load to start js
 window.onload = function () {
@@ -10,7 +9,7 @@ window.onload = function () {
 };
 console.log("main.js loaded");
 
-// starting JS= Populating DropDonw Menu
+// 1= starting JS= Populating DropDonw Menu
 
 // find dropdonw in the html and creat a variable to it
 
@@ -18,12 +17,12 @@ const familyMemberSelect = document.getElementById("family-member-select");
 
 //safety / error= adding secury code to check if code find the "familyMemberSelect" elemnt avoid break the all script.so add the IF (BEFORE) and Else(end) OF THE LOOP.
 if (familyMemberSelect) {
-   console.log("Found the dropdown element. Attempting to populate...");
+   console.log("Found the dropdown element");
 
    try {
       // if YES= run the function
       const familyMemberIds = getUserIds();
-      console.log("Retrieved family member IDs:", familyMemberIds);
+      console.log("print IDs:", familyMemberIds);
 
       //LOOP:
 
@@ -39,9 +38,21 @@ if (familyMemberSelect) {
         // append/ creat elemnte Child inside parent in the HTML
          familyMemberSelect.appendChild(optionElement);
          //error safty:
-      }); // End of the loop for one memberId
+      }); // End of the loop FIRST PART OF THE CODE =DROPDONW MENU
 
-      console.log("Dropdown population complete.");
+      console.log("Dropdown working.");
+
+     // 2= PART OF CODE AFTER DROPDOWNMENU BEEN POPULATE/Dropdown Selection= USER 
+
+     familyMemberSelect.addEventListener('change', function () {
+       console.log("Dropdown selection changed!");
+       const selectedUserId = this.value;
+       console.log(`User selected ID: ${selectedUserId}`);
+       
+     });
+     // END OF 2 CODE Dropdown Selection= USER
+
+
 
       //End of chechink Error:
    } catch (error) {
