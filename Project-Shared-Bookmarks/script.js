@@ -1,5 +1,5 @@
 // get data for storage.js
-import { getUserIds } from "./storage.js";
+import { getUserIds, getData } from "./storage.js";
 
 
 // whait for the html to be load to start js
@@ -51,6 +51,22 @@ if (familyMemberSelect) {
        
      });
      // END OF 2 CODE Dropdown Selection= USER
+
+     // Before starting display Whislist IMPORTANT CLEAR DISPLAY AREA:
+
+      // --- NEW TINY STEP ADDED BELOW ---
+
+      // 1 = CREAT VARIABLE / found html  display area
+      const wishlistDisplayArea = document.getElementById("wishlist-display");
+
+      // 2= Safety check/ and CLEAR DISPLY AREA
+      if (wishlistDisplayArea) {
+         wishlistDisplayArea.innerHTML = '';
+         console.log("Cleared the wishlist display area."); // ALWANYS CONSOLE LOG. FOR CODE NOT CRASH AFTER LONG WORK
+      } else {
+         // Log an error if the display area couldn't be found (e.g., typo in ID)
+         console.error("Could not find the #wishlist-display element!");
+      }
 
 
 
