@@ -33,7 +33,7 @@ if (familyMemberSelect) {
 
         //create variables for value ( invisible) text(visible)
          optionElement.value = memberId;
-         optionElement.textContent = memberId;
+         optionElement.textContent = memberId;///create waht show in the browser
 
         // append/ creat elemnte Child inside parent in the HTML
          familyMemberSelect.appendChild(optionElement);
@@ -46,10 +46,9 @@ if (familyMemberSelect) {
 
      familyMemberSelect.addEventListener('change', function () {
        console.log("Dropdown selection changed!");
-       const selectedUserId = this.value;
+        const selectedUserId = this.value;
        console.log(`User selected ID: ${selectedUserId}`);
        
-     });
      // END OF 2 CODE Dropdown Selection= USER
 
      // Before starting display Whislist IMPORTANT CLEAR DISPLAY AREA:
@@ -57,20 +56,37 @@ if (familyMemberSelect) {
       // --- NEW TINY STEP ADDED BELOW ---
 
       // 1 = CREAT VARIABLE / found html  display area
-      const wishlistDisplayArea = document.getElementById("wishlist-display");
+        // a) Clear the previous display area
+        const wishlistDisplayArea = document.getElementById("wishlist-display");
+        if (wishlistDisplayArea) {
+           wishlistDisplayArea.innerHTML = ''; // Clear content
+           console.log("Cleared the wishlist display area.");
+        } else {
+           console.error("Could not find the #wishlist-display element!");
+        }
 
-      // 2= Safety check/ and CLEAR DISPLY AREA
-      if (wishlistDisplayArea) {
-         wishlistDisplayArea.innerHTML = '';
-         console.log("Cleared the wishlist display area."); // ALWANYS CONSOLE LOG. FOR CODE NOT CRASH AFTER LONG WORK
-      } else {
-         // Log an error if the display area couldn't be found (e.g., typo in ID)
-         console.error("Could not find the #wishlist-display element!");
-      }
+        //3= Dislay text for each Whislist Id user: Dad Whishlist. 
+        //creat prcurar id no HTML for Select-name 
+        const selectedPersonNameSpan = document.getElementById("selected-person-name");
 
+        // 4= chche if it is tehre 
+        if (selectedPersonNameSpan) {
+           // 5. Update the text content of the span
 
+           if (selectedUserId) {
+              selectedPersonNameSpan.textContent = `${selectedUserId}'s Wishlist`; // "Dad's Wishlist"
+              console.log(`Updated heading span to: ${selectedPersonNameSpan.textContent}`);// check code
+           } else {
+              // Handle the case where the "-- Select a Person --" option is chosen
+              selectedPersonNameSpan.textContent = 'Wishlist'; // Reset to generic
+              console.log("Reset heading span to generic 'Wishlist'.");
+           }
+        } else {
+           // Log an error if the name span couldn't be found
+           console.error("Could not find the #selected-person-name element!");
+        }
+     }); // END EVENT LISTENER FUNCTION
 
-      //End of chechink Error:
    } catch (error) {
       //  if Step 3 getUserIds or looping failed:
       console.error(
@@ -88,3 +104,9 @@ if (familyMemberSelect) {
       'CRITICAL ERROR: Could not find element with ID "family-member-select"!'
    );
 }
+console.log("script.js initial execution finished."); // Log script end
+
+
+
+
+   
