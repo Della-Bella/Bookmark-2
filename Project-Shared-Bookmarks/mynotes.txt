@@ -1,17 +1,20 @@
-// get data for storage.js
+## get data for storage.js  ##
 import { getUserIds, getData } from "./storage.js";
 
 
-// whait for the html to be load to start js
+
+
+// ## @@ whait for the html to be load to start js  ## @@
+
 window.onload = function () {
    const users = getUserIds();
    //document.querySelector("body").innerText = `There are ${users.length} users`;
 };
 console.log("main.js loaded");
 
-// 1= starting JS= Populating DropDonw Menu
+// ##  1= starting JS= Populating DropDonw Menu  ## 
 
-// find dropdonw in the html and creat a variable to it
+// hack :find dropdonw in the html and creat a variable to it
 
 const familyMemberSelect = document.getElementById("family-member-select");
 
@@ -24,7 +27,7 @@ if (familyMemberSelect) {
       const familyMemberIds = getUserIds();
       console.log("print IDs:", familyMemberIds);
 
-      //LOOP:
+      //OPTIMIZE: function to create otions for the menu / IDS USERS 
 
       familyMemberIds.forEach((memberId) => {
 
@@ -42,23 +45,22 @@ if (familyMemberSelect) {
 
       console.log("Dropdown working.");
 
-     // 2= PART OF CODE AFTER DROPDOWNMENU BEEN POPULATE/Dropdown Selection= USER 
+     // ## 2= PART OF CODE AFTER DROPDOWNMENU BEEN POPULATE/Dropdown Selection= USER/ CHANGE USER   ## 
 
      familyMemberSelect.addEventListener('change', function () {
        console.log("Dropdown selection changed!");
-
-
         const selectedUserId = this.value;
        console.log(`User selected ID: ${selectedUserId}`);
        
      // END OF 2 CODE Dropdown Selection= USER
 
-     // 5= DISPLAY WHISHLIST:
-     //  Before starting display Whislist IMPORTANT CLEAR DISPLAY AREA:
+     // Before starting display Whislist IMPORTANT CLEAR DISPLAY AREA:
 
-   
-      // 1 = CREAT VARIABLE / found html  display area
+
+      // IMPORTANT 1 = CREAT VARIABLE / found html  display area
         // a) Clear the previous display area
+
+
         const wishlistDisplayArea = document.getElementById("wishlist-display");
         if (wishlistDisplayArea) {
            wishlistDisplayArea.innerHTML = ''; // Clear content
@@ -67,13 +69,18 @@ if (familyMemberSelect) {
            console.error("Could not find the #wishlist-display element!");
         }
 
-        //3= Dislay text for each Whislist Id user: Dad Whishlist. 
-        //creat prcurar id no HTML for Select-name 
+        //## 3= Dislay text for each Whislist Id user: Dad Whishlist. ## 
+
+        //creat prOcurar id no HTML for Select-name 
+
+
         const selectedPersonNameSpan = document.getElementById("selected-person-name");
 
-        // 4= chche if it is tehre 
+        // 4= chche if it is There
+
+
         if (selectedPersonNameSpan) {
-           // 5. Update the text content of the span
+           //   5. Update the text content of the span
 
            if (selectedUserId) {
               selectedPersonNameSpan.textContent = `${selectedUserId}'s Wishlist`; // "Dad's Wishlist"
@@ -89,7 +96,9 @@ if (familyMemberSelect) {
         }
 
         
-     }); // END EVENT LISTENER FUNCTION
+     }); 
+     
+     // END EVENT LISTENER FUNCTION
 
    } catch (error) {
       //  if Step 3 getUserIds or looping failed:
@@ -101,7 +110,7 @@ if (familyMemberSelect) {
       familyMemberSelect.innerHTML =
          '<option value="">Error loading data</option>';
    }
-} else {
+}  else {
    // If NO, we did NOT find the dropdown element in the HTML.
    // This usually means a typo in the ID in HTML or JavaScript.
    console.error(
@@ -109,8 +118,3 @@ if (familyMemberSelect) {
    );
 }
 console.log("script.js initial execution finished."); // Log script end
-
-
-
-
-   
