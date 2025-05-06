@@ -88,6 +88,24 @@ if (familyMemberSelect) {
            console.error("Could not find the #selected-person-name element!");
         }
 
+        // ---> START OF GET DATA FROM THE USER <---
+
+        // A user ID is selected, START TO COLLECT THE data:
+
+        if (selectedUserId) {
+           console.log(`Attempting to fetch data for user: ${selectedUserId}`);
+
+           // Call getData and store the result
+           const userWishlistItems = getData(selectedUserId);
+
+           // Log what was returned to see if it worked and what the data looks like
+           console.log("Data received from getData():", userWishlistItems);
+
+        } else {
+           // selectedUserId is empty ( "-- Select --")
+           console.log("No specific user selected. Display area will remain empty.");
+        }
+
         
      }); // END EVENT LISTENER FUNCTION
 
