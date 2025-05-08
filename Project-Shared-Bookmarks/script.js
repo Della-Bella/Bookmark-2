@@ -14,6 +14,11 @@ console.log("main.js loaded");
 // find dropdonw in the html and creat a variable to it
 
 const familyMemberSelect = document.getElementById("family-member-select");
+const presentNameInput = document.getElementById('present-name'); // Use the actual ID from your HTML
+const descriptionInput = document.getElementById('present-description'); // Use the actual ID
+const linkInput = document.getElementById('present-url');             // Use the actual ID
+const addToWishlistButton = document.getElementById('add-to-wishlist-button');
+const wishlistDisplayArea = document.getElementById("wishlist-display");
 
 //safety / error= adding secury code to check if code find the "familyMemberSelect" elemnt avoid break the all script.so add the IF (BEFORE) and Else(end) OF THE LOOP.
 if (familyMemberSelect) {
@@ -59,7 +64,7 @@ if (familyMemberSelect) {
    
       // 1 = CREAT VARIABLE / found html  display area
         // a) Clear the previous display area
-        const wishlistDisplayArea = document.getElementById("wishlist-display");
+     
         if (wishlistDisplayArea) {
            wishlistDisplayArea.innerHTML = ''; // Clear content
            console.log("Cleared the wishlist display area.");
@@ -96,15 +101,118 @@ if (familyMemberSelect) {
            console.log(`Attempting to fetch data for user: ${selectedUserId}`);
 
            // Call getData and store the result
-           const userWishlistItems = getData(selectedUserId);
+           const userWishlistItems = getData(selectedUserId);//the userWishlistItems variable. This variable holds the wishlist items (or null, or an empty array) for the selected user.c
 
            // Log what was returned to see if it worked and what the data looks like
            console.log("Data received from getData():", userWishlistItems);
 
+           // START SHOWING ITENS IN DIPLAY
+
+           if (userWishlistItems && userWishlistItems.length > 0) {
+              console.log(`Found ${userWishlistItems.length} items to display.`);
+
+              userWishlistItems.forEach((wishlistItem) => {
+                 console.log("Currently displaying item:", wishlistItem);
+
+                 const itemElement = document.createElement("div");
+                 itemElement.classList.add("wishlist-item"); // Add a class for styling
+
+                 if (typeof wishlistItem === 'object' && wishlistItem !== null) {
+                    // 1. Display Present Name (itemName)
+                    if (wishlistItem.itemName) {
+                       const nameElement = document.createElement("h4");
+                       nameElement.textContent = wishlistItem.itemName;
+                       nameElement.style.margin = "0 0 5px 0";
+                       itemElement.appendChild(nameElement);
+                    } else {
+                       const nameElement = document.createElement("h4");
+                       nameElement.textContent = "Unnamed Item";
+                       nameElement.style.margin = "0 0 5px 0";
+                       itemElement.appendChild(nameElement);
+                    }
+
+                    // 2. Display Description / Notes
+                    if (wishlistItem.description) {
+                       const descriptionElement = document.createElement("p");
+                       descriptionElement.textContent = wishlistItem.description;
+                       descriptionElement.style.fontSize = "0.9em";
+                       descriptionElement.style.color = "#333";
+                       descriptionElement.style.marginBottom = "5px";
+                       itemElement.appendChild(descriptionElement);
+                    }
+
+                    // 3. Display Link
+                    if (wishlistItem.link) {
+                       const linkElement = document.createElement("a");
+                       let properLink = wishlistItem.link.trim();
+
+                       if (properLink && !properLink.startsWith('http://') && !properLink.startsWith('https://')) {
+                          properLink = 'http://' + properLink;
+                       }
+
+                       linkElement.href = properLink;
+                       linkElement.textContent = "View Item";
+                       linkElement.target = "_blank";
+                       linkElement.rel = "noopener noreferrer";
+                       linkElement.style.display = "inline-block";
+                       // linkElement.style.marginTop = "5px"; // Uncomment if you want more top margin for the link
+                       itemElement.appendChild(linkElement);
+                    }
+                 } else if (typeof wishlistItem === 'string') {
+                    // Fallback if an item is just a string
+                    itemElement.textContent = wishlistItem;
+                 } else {
+                    // Fallback for unknown item format
+                    itemElement.textContent = "Invalid item data.";
+                    console.warn("Encountered an item with an unexpected format:", wishlistItem);
+                 }
+
+                 // Optional styling for the item container
+                 itemElement.style.border = "1px solid #ddd";
+                 itemElement.style.padding = "10px 15px";
+                 itemElement.style.marginBottom = "10px";
+                 itemElement.style.borderRadius = "5px";
+                 itemElement.style.backgroundColor = "#f9f9f9";
+
+                 if (wishlistDisplayArea) { // Ensure wishlistDisplayArea is still valid
+                    wishlistDisplayArea.appendChild(itemElement);
+                 } else {
+                    console.error("Wishlist display area became unavailable while adding items.");
+                 }
+              }); // End of forEach loop
+
+           } else if (userWishlistItems && userWishlistItems.length === 0) {
+              console.log("This user has no wishlist items yet.");
+              if (wishlistDisplayArea) {
+                 const noItemsMessage = document.createElement("p");
+                 noItemsMessage.textContent = "This person hasn't added any wishes yet!";
+                 noItemsMessage.style.fontStyle = "italic";
+                 wishlistDisplayArea.appendChild(noItemsMessage);
+              }
+           } else {
+              // This case handles if userWishlistItems is null (e.g., user not found in storage)
+              // or some other unexpected return from getData()
+              console.log("No wishlist data available for this user or an error occurred.");
+              if (wishlistDisplayArea) {
+                 const errorMessage = document.createElement("p");
+                 errorMessage.textContent = "Could not load wishlist items at this time.";
+                 wishlistDisplayArea.appendChild(errorMessage);
+              }
+           }
+
+
+
+
+
+
+           
         } else {
            // selectedUserId is empty ( "-- Select --")
            console.log("No specific user selected. Display area will remain empty.");
         }
+
+        
+        
 
         
      }); // END EVENT LISTENER FUNCTION
