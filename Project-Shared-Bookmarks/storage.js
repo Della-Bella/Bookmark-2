@@ -39,3 +39,40 @@ export function setData(userId, data) {
 export function clearData(userId) {
   localStorage.removeItem(`stored-data-user-${userId}`);
 }
+
+/**
+ * Adds a new wishlist item for a specific user.
+ *
+ * @param {string} userId The user id to add the wish for.
+ * @param {object} newItem The new wishlist item object (e.g., { itemName: "...", description: "...", link: "..." }).
+ * @returns {boolean} True if the item was added successfully, false otherwise.
+ */
+export function addWishlistItem(userId, newItem) {
+  if (!userId || !newItem || typeof newItem.itemName === 'undefined' || newItem.itemName.trim() === '') {
+    console.error("addWishlistItem: Invalid userId or newItem (itemName is required).", { userId, newItem });
+    return false; // Indicate failure or invalid input
+  }
+
+  try {
+    // 1. Get the current wishlist for the user.
+    //    getData might return null if the user has no items yet.
+    let currentWishlist = getData(userId);
+
+    // 2. If there's no current wishlist (e.g., first item for this user),
+    //    initialize it as an empty array.
+    if (!currentWishlist || !Array.isArray(currentWishlist)) {
+      currentWishlist = [];
+    }
+
+    // 3. Add the new item to the array.
+    currentWishlist.push(newItem);
+
+    // 4. Save the updated wishlist back to storage using setData.
+    setData(userId, currentWishlist);
+    console.log(`Item added for ${userId}. New wishlist:`, currentWishlist);
+    return true; // Indicate success
+  } catch (error) {
+    console.error(`Error adding wishlist item for ${userId}:`, error);
+    return false; // Indicate failure
+  }
+}
