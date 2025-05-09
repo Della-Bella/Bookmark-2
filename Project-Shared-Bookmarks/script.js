@@ -46,7 +46,7 @@ window.onload = function () { // <<< START of window.onload
       if (userWishlistItems && userWishlistItems.length > 0) {
          console.log(`Found ${userWishlistItems.length} items to display.`);
 
-         userWishlistItems.forEach((wishlistItem) => {
+         userWishlistItems.forEach((wishlistItem, index) => {
             console.log("Currently displaying item in displayWishlistForUser:", wishlistItem);
 
             const itemElement = document.createElement("div");
@@ -101,11 +101,29 @@ window.onload = function () { // <<< START of window.onload
             itemElement.style.borderRadius = "5px";
             itemElement.style.backgroundColor = "#f9f9f9";
 
+            // --- Create and add the Delete Button ---
+            const deleteButton = document.createElement("button");
+            deleteButton.textContent = "Delete"; 
+            deleteButton.classList.add("delete-item-btn"); //  styling & event listiner
+            deleteButton.setAttribute("data-item-index", index); // <<< Store the item's index!
+
+            //  styling for the button
+            deleteButton.style.marginLeft = "10px";
+            deleteButton.style.padding = "2px 8px";
+            deleteButton.style.backgroundColor = "#ffdddd";
+            deleteButton.style.border = "1px solid #ffaaaa";
+            deleteButton.style.borderRadius = "3px";
+            deleteButton.style.cursor = "pointer";
+
+            itemElement.appendChild(deleteButton); 
+
             if (wishlistDisplayArea) {
                wishlistDisplayArea.appendChild(itemElement);
             } else {
                console.error("Wishlist display area became unavailable while adding items.");
             }
+
+            
          }); // End of forEach loop
 
       } else if (userWishlistItems && userWishlistItems.length === 0) { // This belongs to the if (userWishlistItems && userWishlistItems.length > 0)
