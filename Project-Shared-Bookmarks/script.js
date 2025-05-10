@@ -1,5 +1,5 @@
 // Get data for storage.js
-import { getUserIds, getData, addWishlistItem } from "./storage.js";
+import { getUserIds, getData, addWishlistItem, deleteWishlistItem } from "./storage.js";
 
 // Wait for the HTML to be loaded to start JS
 window.onload = function () { // <<< START of window.onload
@@ -114,6 +114,27 @@ window.onload = function () { // <<< START of window.onload
             deleteButton.style.border = "1px solid #ffaaaa";
             deleteButton.style.borderRadius = "3px";
             deleteButton.style.cursor = "pointer";
+
+            // --- ADD EVENT LISTENER TO THE DELETE BUTTON ---
+            deleteButton.addEventListener('click', function () {
+               const itemIndexToDelete = parseInt(this.getAttribute('data-item-index')); // 'this' refers to the clicked button
+               console.log(`Attempting to delete item at index: ${itemIndexToDelete} for user: ${userId}`);
+
+               // Confirm before deleting (optional but good UX)
+               const confirmDelete = confirm(`Are you sure you want to delete "${wishlistItem.itemName || 'this item'}"?`);
+               if (confirmDelete) {
+                  const success = deleteWishlistItem(userId, itemIndexToDelete);
+                  if (success) {
+                     console.log("Item deleted successfully from storage.");
+                     displayWishlistForUser(userId); // Refresh the list
+                  } else {
+                     console.error("Failed to delete item from storage.");
+                     alert("Could not delete the wishlist item. Please check the console for errors.");
+                  }
+               } else {
+                  console.log("Deletion cancelled by user.");
+               }
+            });
 
             itemElement.appendChild(deleteButton); 
 

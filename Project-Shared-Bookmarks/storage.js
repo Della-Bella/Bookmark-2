@@ -99,6 +99,7 @@ export function deleteWishlistItem(userId, itemIndex) {
       // 3. Remove the item at the specified index.
       //    `splice` modifies the array in place and returns an array of removed items.
       currentWishlist.splice(itemIndex, 1);
+      console.log(`ìte removed`)
 
       // 4. Save the updated wishlist back to storage.
       setData(userId, currentWishlist);
