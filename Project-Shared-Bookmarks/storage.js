@@ -76,3 +76,40 @@ export function addWishlistItem(userId, newItem) {
     return false; // Indicate failure
   }
 }
+
+/**
+ * Deletes a specific wishlist item for a user.
+ *
+ * @param {string} userId The user id whose list to modify.
+ * @param {number} itemIndex The index of the item to remove from the wishlist.
+ * @returns {boolean} True if the item was deleted successfully, false otherwise.
+ */
+export function deleteWishlistItem(userId, itemIndex) {
+  if (!userId || typeof itemIndex !== 'number' || itemIndex < 0) {
+    console.error("deleteWishlistItem: Invalid userId or itemIndex.", { userId, itemIndex });
+    return false;
+  }
+
+  try {
+    // 1. Get the current wishlist for the user.
+    let currentWishlist = getData(userId);
+
+    // 2. Check if the wishlist exists and the index is valid.
+    if (currentWishlist && Array.isArray(currentWishlist) && itemIndex < currentWishlist.length) {
+      // 3. Remove the item at the specified index.
+      //    `splice` modifies the array in place and returns an array of removed items.
+      currentWishlist.splice(itemIndex, 1);
+
+      // 4. Save the updated wishlist back to storage.
+      setData(userId, currentWishlist);
+      console.log(`Item at index ${itemIndex} deleted for ${userId}. New wishlist:`, currentWishlist);
+      return true; // Indicate success
+    } else {
+      console.warn(`deleteWishlistItem: Item at index ${itemIndex} not found for user ${userId}, or wishlist is empty/invalid.`, { currentWishlist });
+      return false; // Indicate item not found or invalid index
+    }
+  } catch (error) {
+    console.error(`Error deleting wishlist item for ${userId} at index ${itemIndex}:`, error);
+    return false; // Indicate failure
+  }
+}
