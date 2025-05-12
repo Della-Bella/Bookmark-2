@@ -15,20 +15,36 @@ export function getUserIds() {
  * Get data associated with a specific user.
  *
  * @param {string} userId The user id to get data for
- * @returns {any | null} The data associated with the user
+ * @returns {object[] | null} The data associated with the user (an array of wishlist items or null)
  */
 export function getData(userId) {
-  return JSON.parse(localStorage.getItem(`stored-data-user-${userId}`));
+  const data = localStorage.getItem(`stored-data-user-${userId}`);
+  if (!data) {
+    return null; // No data for this user, return null
+  }
+  try {
+    const parsedData = JSON.parse(data);
+    // Ensure what we parsed is actually an array
+    return Array.isArray(parsedData) ? parsedData : null;
+  } catch (e) {
+    // console.error(`Error parsing data for user ${userId}:`, e); // Optional: for debugging
+    return null; // Return null if parsing fails or data is not an array
+  }
 }
 
 /**
  * Store data for a specific user.
  *
  * @param {string} userId The user id to store data for
- * @param {any} data The data to store
+ * @param {object[]} data The data to store (should be an array of wishlist items)
  */
 export function setData(userId, data) {
-  localStorage.setItem(`stored-data-user-${userId}`, JSON.stringify(data));
+  // Ensure data is an array before storing
+  if (Array.isArray(data)) {
+    localStorage.setItem(`stored-data-user-${userId}`, JSON.stringify(data));
+  } else {
+    console.error(`setData: Attempted to store non-array data for user ${userId}`, data);
+  }
 }
 
 /**
@@ -55,12 +71,11 @@ export function addWishlistItem(userId, newItem) {
 
   try {
     // 1. Get the current wishlist for the user.
-    //    getData might return null if the user has no items yet.
-    let currentWishlist = getData(userId);
+    let currentWishlist = getData(userId); // getData now more robust
 
     // 2. If there's no current wishlist (e.g., first item for this user),
     //    initialize it as an empty array.
-    if (!currentWishlist || !Array.isArray(currentWishlist)) {
+    if (!currentWishlist) { // Handles null from getData correctly
       currentWishlist = [];
     }
 
@@ -74,5 +89,41 @@ export function addWishlistItem(userId, newItem) {
   } catch (error) {
     console.error(`Error adding wishlist item for ${userId}:`, error);
     return false; // Indicate failure
+  }
+}
+
+//--- ADD THIS FUNCTION ---
+/**
+ * Deletes a specific wishlist item for a user.
+ *
+ * @param {string} userId The user id whose list to modify.
+ * @param {number} itemIndex The index of the item to remove from the wishlist.
+ * @returns {boolean} True if the item was deleted successfully, false otherwise.
+ */
+export function deleteWishlistItem(userId, itemIndex) {
+  if (!userId || typeof itemIndex !== 'number' || itemIndex < 0) {
+    console.error("deleteWishlistItem: Invalid userId or itemIndex.", { userId, itemIndex });
+    return false;
+  }
+
+  try {
+    let currentWishlist = getData(userId);
+    if (currentWishlist && Array.isArray(currentWishlist) && itemIndex < currentWishlist.length) {
+      const removedItemArray = currentWishlist.splice(itemIndex, 1);
+      if (removedItemArray && removedItemArray.length > 0) {
+        console.log(`Item removed for ${userId} at index ${itemIndex}:`, removedItemArray[0]);
+      } else {
+        console.log(`Splice did not return a removed item for ${userId} at index ${itemIndex}. List state:`, currentWishlist);
+      }
+      setData(userId, currentWishlist);
+      console.log(`Updated wishlist for ${userId} after deletion:`, currentWishlist);
+      return true;
+    } else {
+      console.warn(`deleteWishlistItem: Item at index ${itemIndex} not found for user ${userId}, or wishlist is empty/invalid.`, { currentWishlist });
+      return false;
+    }
+  } catch (error) {
+    console.error(`Error deleting wishlist item for ${userId} at index ${itemIndex}:`, error);
+    return false;
   }
 }
