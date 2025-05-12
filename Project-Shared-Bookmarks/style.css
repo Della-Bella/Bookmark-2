@@ -1,0 +1,267 @@
+/* style.css - For HTML without extra wrapper divs & JS with inline styles */
+
+/* --- Global Styles & Variables --- */
+:root {
+    --primary-red: #d9534f;
+    /* Christmas Red */
+    --primary-green: #5cb85c;
+    /* Christmas Green */
+    --pastel-pink: #f8d7da;
+    --pastel-blue: #d1ecf1;
+    --pastel-green: #d4edda;
+    --light-cream: #fdfbf4;
+    --dark-text: #495057;
+    --medium-text: #6c757d;
+    --border-color: #ced4da;
+    --shadow-color: rgba(0, 0, 0, 0.1);
+
+    --font-heading: 'Pacifico', cursive;
+    --font-body: 'Nunito', sans-serif;
+}
+
+body {
+    font-family: var(--font-body);
+    background-color: var(--light-cream);
+    color: var(--dark-text);
+    line-height: 1.6;
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    /* Align items vertically */
+    align-items: center;
+    /* Center content horizontally */
+}
+
+/* Style the direct children of body if needed for centering a main block */
+body>h1,
+body>div,
+/* This will target the dropdown div and wishlist-display */
+body>h2,
+body>form {
+    width: 100%;
+    max-width: 600px;
+    /* Adjust for overall content width */
+    margin-left: auto;
+    margin-right: auto;
+    box-sizing: border-box;
+}
+
+
+h1,
+h2 {
+    font-family: var(--font-heading);
+    color: var(--primary-red);
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+h1 {
+    font-size: 2.5em;
+    margin-bottom: 30px;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+    font-size: 1.6em;
+    color: var(--primary-green);
+    margin-top: 30px;
+    padding-bottom: 5px;
+    border-bottom: 2px dashed var(--pastel-green);
+}
+
+/* --- Dropdown Menu (targeting the div around it) --- */
+body>div:first-of-type {
+    /* Targets the first div, assuming it's the dropdown container */
+    background-color: var(--pastel-blue);
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+    color: var(--medium-text);
+}
+
+/* --- Form Styling --- */
+#add-present-form {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px var(--shadow-color);
+    margin-bottom: 30px;
+}
+
+#add-present-form div {
+    /* Spacing for divs inside the form */
+    margin-bottom: 15px;
+}
+
+input[type="text"],
+input[type="url"],
+textarea,
+select {
+    width: 100%;
+    padding: 10px;
+    /* margin-bottom: 10px; Let the parent div handle bottom margin */
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    box-sizing: border-box;
+    font-family: var(--font-body);
+    font-size: 1em;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+input[type="text"]:focus,
+input[type="url"]:focus,
+textarea:focus,
+select:focus {
+    border-color: var(--primary-green);
+    box-shadow: 0 0 0 0.2rem rgba(92, 184, 92, 0.25);
+    outline: none;
+}
+
+textarea {
+    resize: vertical;
+    min-height: 60px;
+}
+
+button[type="submit"]#add-to-wishlist-button {
+    background-color: var(--primary-red);
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-family: var(--font-body);
+    font-size: 1.05em;
+    font-weight: bold;
+    display: block;
+    width: 100%;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+button[type="submit"]#add-to-wishlist-button:hover {
+    background-color: #c9302c;
+    transform: translateY(-2px);
+}
+
+
+/* --- Wishlist Display Section --- */
+/* Targeting the h2 with the span inside it for the wishlist title */
+h2>span#selected-person-name {
+    /* The h2 already has styles, this span is inside it */
+}
+
+#wishlist-display {
+    margin-top: 10px;
+    /* Space below the "Wishlist for..." title */
+}
+
+/* Styling wishlist items created by JS */
+/* JS applies inline styles, so these might need !important or JS styles removed */
+#wishlist-display .wishlist-item {
+    background-color: var(--pastel-green) !important;
+    /* Override JS inline style */
+    border: 1px solid var(--primary-green) !important;
+    /* Override JS inline style */
+    border-left: 5px solid var(--primary-green) !important;
+    padding: 15px !important;
+    /* Override JS inline style */
+    margin-bottom: 15px !important;
+    /* Override JS inline style */
+    border-radius: 8px !important;
+    /* Override JS inline style */
+    box-shadow: 0 2px 5px var(--shadow-color);
+    transition: transform 0.2s ease-in-out;
+    /* JS adds display:flex, justify-content: space-between, align-items: flex-start */
+}
+
+#wishlist-display .wishlist-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 3px 7px var(--shadow-color);
+}
+
+/* Item content (name, description, link) - JS directly appends these to .wishlist-item */
+#wishlist-display .wishlist-item h4 {
+    font-family: var(--font-body);
+    font-weight: bold;
+    font-size: 1.15em;
+    color: var(--dark-text);
+    margin-top: 0 !important;
+    /* Override JS inline style */
+    margin-bottom: 8px !important;
+    /* Override JS inline style */
+}
+
+#wishlist-display .wishlist-item p {
+    font-size: 0.9em !important;
+    /* Override JS inline style */
+    color: var(--medium-text) !important;
+    /* Override JS inline style */
+    margin-bottom: 10px !important;
+    /* Override JS inline style */
+    word-wrap: break-word;
+    flex-grow: 1;
+    /* Allow text content to take space before button */
+}
+
+#wishlist-display .wishlist-item a {
+    color: var(--primary-red);
+    text-decoration: none;
+    font-weight: bold;
+    /* display: inline-block; JS sets this */
+    margin-right: 10px !important;
+    /* Override JS inline style if present */
+    padding: 3px 8px;
+    border: 1px solid var(--primary-red);
+    border-radius: 4px;
+    background-color: white;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+#wishlist-display .wishlist-item a:hover {
+    background-color: var(--primary-red);
+    color: white;
+}
+
+/* Delete Button Styling (JS adds class .delete-item-btn and inline styles) */
+.delete-item-btn {
+    background-color: var(--pastel-pink) !important;
+    color: var(--primary-red) !important;
+    border: 1px solid var(--primary-red) !important;
+    padding: 5px 10px !important;
+    /* More specific padding */
+    border-radius: 4px !important;
+    cursor: pointer !important;
+    font-size: 0.9em;
+    font-family: var(--font-body);
+    font-weight: bold;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    align-self: flex-start;
+    /* Works if parent .wishlist-item is flex */
+    white-space: nowrap;
+    /* flex-shrink: 0; JS sets this */
+    margin-left: auto !important;
+    /* Try to push it right if not using complex flex on parent */
+}
+
+.delete-item-btn:hover {
+    background-color: var(--primary-red) !important;
+    color: white !important;
+}
+
+/* Message for no items */
+#wishlist-display p[style*="italic"] {
+    color: var(--medium-text);
+    text-align: center;
+    padding: 20px;
+    background-color: var(--pastel-blue);
+    border-radius: 6px;
+    font-style: italic !important;
+    /* Ensure italic if JS is also setting it */
+}
