@@ -1,9 +1,11 @@
 // Get data for storage.js
 import { getUserIds, getData, addWishlistItem, deleteWishlistItem } from "./storage.js"; // <<< Make sure deleteWishlistItem is imported from your updated storage.js
 
-// Wait for the HTML to be loaded to start JS
+// Wait for the HTML to be loaded to start JS// card 1
 window.onload = function () { // <<< START of window.onload
    console.log("main.js loaded and window is ready.");
+
+   // start CARD 2
 
    // --- Element References ---
    const familyMemberSelect = document.getElementById("family-member-select");//dropdonw menu
@@ -16,7 +18,9 @@ window.onload = function () { // <<< START of window.onload
    const descriptionInput = document.getElementById('present-description');
    const linkInput = document.getElementById('present-url');
 
-   // --- Function to display wishlist items ---
+   //---end card 2
+
+   // --- Function to display wishlist items --- CARD 3 =START FUNCTION DISPLAYWHISHILISTUSERID
    function displayWishlistForUser(userId) {
       if (!wishlistDisplayArea) { // ! = is it wasn't fund 
          console.error("Could not find the #wishlist-display element! Cannot display items.");
@@ -33,17 +37,30 @@ window.onload = function () { // <<< START of window.onload
             selectedPersonNameSpan.textContent = 'Wishlist';
          }
       }
+      // end card 3
 
+      //---start card 4= CHECKS
       if (!userId) {
          console.log("No specific user selected. Display area will remain empty.");
          return; // Exit if no user is selected
       }
+
+      //----end of getting data
+
+      //---- START CARD 5 = GETTING DATA= NEED VARIABLE WHEN CALL FUNCTION TO STORAGE THE DATA GetData(userID)
          // midle of DisplayWhishListforUser function
+
       console.log(`Attempting to fetch and display data for user: ${userId}`);
 
       const userWishlistItems = getData(userId);
 
       console.log("Data received from getData():", userWishlistItems);
+
+     
+//---END CARD  5
+      
+//--STRAT CARD 6--// CHECK ITENS  & LOOPING //START CREATING LIST
+
 
       if (userWishlistItems && userWishlistItems.length > 0) {
          console.log(`Found ${userWishlistItems.length} items to display.`);
@@ -51,15 +68,24 @@ window.onload = function () { // <<< START of window.onload
          userWishlistItems.forEach((wishlistItem, index) => {// call back function that forEach runs for every item.
             console.log("Currently displaying item in displayWishlistForUser:", wishlistItem);
 
+            // CARD 7---- PART A =START CREATING ELEMENTS-= FIRST CREATE DIV IN THE HTML + ADD CLASS
+
             const itemElement = document.createElement("div");
-            // itemElement.classList.add("present-name");
-            itemElement.classList.add("wishlist-item");
+
+            itemElement.classList.add("wishlist-item");// css class adding into js
+
+            // ------END CARD 7-------
+
+
+            // START CARD 8- PART B
+            //FIRST CHECK IF IT IS A OBJECT
+            // then apendChild to the item element div 
 
             if (typeof wishlistItem === 'object' && wishlistItem !== null) {
                if (wishlistItem.itemName) {
                   const nameElement = document.createElement("h4");
                   nameElement.textContent = wishlistItem.itemName;
-                  nameElement.style.margin = "0 0 5px 0";
+                  nameElement.style.margin = "0 0 5px 0"; // inline style js
                   itemElement.appendChild(nameElement);
                } else {
                   const nameElement = document.createElement("h4");
@@ -72,11 +98,12 @@ window.onload = function () { // <<< START of window.onload
                   const descriptionElement = document.createElement("p");
                   descriptionElement.textContent = wishlistItem.description;
                   descriptionElement.style.fontSize = "0.9em";
-                  descriptionElement.style.color = "#333";
+                  descriptionElement.style.color = "#AB274F";
                   descriptionElement.style.marginBottom = "5px";
+                  descriptionElement.style.marginRight = "20px";
                   itemElement.appendChild(descriptionElement);
                }
-
+               //.trim() REMOVES WHITHE SPACES CARACTERS = beginning and the end of a string !!NOT  REMOVE SPACES IN THE MIDDLE
                if (wishlistItem.link && wishlistItem.link.trim() !== "") { // Added check for non-empty link
                   const linkElement = document.createElement("a");
                   let properLink = wishlistItem.link.trim();
@@ -102,14 +129,14 @@ window.onload = function () { // <<< START of window.onload
             itemElement.style.padding = "10px 15px";
             itemElement.style.marginBottom = "10px";
             itemElement.style.borderRadius = "5px";
-            itemElement.style.backgroundColor = "#f9f9f9";
-            // For basic side-by-side layout of content and button if not using full CSS flexbox yet:
+            itemElement.style.backgroundColor = "#AB274F";
+           
             itemElement.style.display = "flex";
             itemElement.style.justifyContent = "space-between";
-            itemElement.style.alignItems = "flex-start"; // Or "center" if you prefer vertical centering
+            itemElement.style.alignItems = "center"; // Or "center" if you prefer vertical centering
 
 
-            // --- Create and add the Delete Button ---
+            // CARD 9 --- Create and add the Delete Button ---
             const deleteButton = document.createElement("button");
             deleteButton.textContent = "Delete";
             deleteButton.classList.add("delete-item-btn"); //  styling & event listiner
@@ -120,13 +147,13 @@ window.onload = function () { // <<< START of window.onload
             deleteButton.style.marginLeft = "10px"; // This might be redundant with flex justify-content: space-between
             deleteButton.style.padding = "2px 8px";
             deleteButton.style.backgroundColor = "#ffdddd";
-            deleteButton.style.border = "1px solid #ffaaaa";
+            deleteButton.style.border = "1px solid #AB274F";
             deleteButton.style.borderRadius = "3px";
             deleteButton.style.cursor = "pointer";
             deleteButton.style.flexShrink = "0"; // Prevent button from shrinking
 
     
-            // --- ADD EVENT LISTENER TO THE DELETE BUTTON ---
+            // CARD 10  --- ADD EVENT LISTENER TO THE DELETE BUTTON ---ParseInt(TRANFORM STRING TO NUMBER TO GET THE INDEX)----confirm()---if--if---else
             deleteButton.addEventListener('click', function () {
                const itemIndexToDelete = parseInt(this.getAttribute('data-item-index'));
                const itemNameForConfirm = (typeof wishlistItem === 'object' && wishlistItem.itemName) ? wishlistItem.itemName : 'this item';
@@ -145,7 +172,7 @@ window.onload = function () { // <<< START of window.onload
                   console.log("Deletion cancelled by user.");
                }
             });
-            // --- ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ ---
+            // --- CARD 11  ------ ADD DELETE BTN
 
             itemElement.appendChild(deleteButton);
 
@@ -176,7 +203,7 @@ window.onload = function () { // <<< START of window.onload
       
    } // End of displayWishlistForUser function
 
-   // --- Populate Dropdown Menu ---
+   // CARD 12 --- Populate Dropdown Menu ---
    if (familyMemberSelect) {
       console.log("Found the dropdown element");
       try {
@@ -207,33 +234,36 @@ window.onload = function () { // <<< START of window.onload
             displayWishlistForUser(selectedUserId);
          });
 
-         // --- Event Listener for Adding a New Present ---
+         //---END CARD 12---
+
+         // CARD 13 --- Event Listener for Adding a New Present ---
          if (addPresentForm) {
-            addPresentForm.addEventListener('submit', function (event) {
-               event.preventDefault();
+            addPresentForm.addEventListener('submit', function (event) { //WHEN SUBMIT IS CLICK RUN THIS FUNCTION==
+               event.preventDefault(); //VERY IMPORTANT! Stops page from reloading!!!
                console.log("Add present form submitted!");
 
-               const selectedUserId = familyMemberSelect.value;
-               const itemName = presentNameInput.value.trim();
-               const description = descriptionInput.value.trim();
-               const link = linkInput.value.trim();
+               const selectedUserId = familyMemberSelect.value; //Who is it for?
+               const itemName = presentNameInput.value.trim(); // Get name from input
+               const description = descriptionInput.value.trim();  // Get description
+               const link = linkInput.value.trim();  // Get link
 
-               if (!selectedUserId) {
+               if (!selectedUserId) { // Must select person
                   alert("Please select a person from the dropdown first!");
                   return;
                }
-               if (!itemName) {
+               if (!itemName) {   // Must enter name
                   alert("Please enter a name for the present!");
                   presentNameInput.focus();
                   return;
                }
-               const newItem = { itemName, description, link };
-               console.log("Attempting to add item:", newItem, "for user:", selectedUserId);
-               const success = addWishlistItem(selectedUserId, newItem);
+               const newItem = { itemName, description, link }; // ADD data into an object
+               console.log("Attempting to add item:", newItem, "for user:", selectedUserId); 
+
+               const success = addWishlistItem(selectedUserId, newItem); // Use storage tool to save
                if (success) {
                   console.log("Item added successfully to storage.");
-                  addPresentForm.reset();
-                  displayWishlistForUser(selectedUserId);
+                  addPresentForm.reset(); // Clear the form fields
+                  displayWishlistForUser(selectedUserId); // Refresh the displayed list!
                } else {
                   console.error("Failed to add item to storage.");
                   alert("Could not add the wishlist item. Please check the console for errors.");
